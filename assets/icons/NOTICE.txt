@@ -1,0 +1,2 @@
+These SVG interface icons are from Tabler Icons: https://github.com/tabler/tabler-icons
+They are distributed under the MIT License in LICENSE.txt.

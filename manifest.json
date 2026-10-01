@@ -1,0 +1,14 @@
+{
+  "manifest_version": 3,
+  "name": "IntraNest",
+  "version": "0.1.0",
+  "description": "Open your team's intranet links and shared space.",
+  "minimum_chrome_version": "120",
+  "permissions": ["storage", "favicon"],
+  "optional_host_permissions": ["http://*/*", "https://*/*"],
+  "action": {
+    "default_title": "IntraNest",
+    "default_popup": "popup.html"
+  },
+  "options_page": "options.html"
+}

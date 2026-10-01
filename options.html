@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'self' https://api.github.com http: https: ws: wss:; form-action 'self'; base-uri 'none'; object-src 'none'">
+  <title>Connection settings — IntraNest</title>
+  <link rel="stylesheet" href="assets/tokens.css">
+  <link rel="stylesheet" href="options.css">
+  <script type="module" src="options.js"></script>
+</head>
+<body>
+  <header class="options-header"><a class="wordmark" href="popup.html">Intra<span>Nest</span></a><button id="language-toggle" class="language-toggle" type="button">한국어</button></header>
+  <main class="options-main">
+    <p class="eyebrow" data-i18n="settings.tag">YOUR INTRANEST</p><h1 data-i18n="settings.title">Connection settings</h1>
+    <p class="lede" data-i18n="settings.body">Your server address and access key are stored in this Chrome profile. Only the server host you enter is requested for access.</p>
+    <form id="settings-form" class="settings-form">
+      <label for="server-address" data-i18n="settings.address">Server address</label><input id="server-address" type="text" inputmode="url" autocomplete="url" placeholder="http://192.168.1.40:8080" required>
+      <label for="access-key" data-i18n="settings.key">Team access key</label><input id="access-key" type="password" autocomplete="current-password" placeholder="Access key from your server host" required>
+      <button id="save-button" class="primary-button" type="submit"><span data-i18n="settings.check">Check and save</span><span class="icon icon-arrow" aria-hidden="true"></span></button>
+      <p id="settings-status" class="form-status" role="status" aria-live="polite"></p>
+    </form>
+    <div class="settings-help"><p data-i18n="settings.permission">The first connection asks Chrome for access to this server address and api.github.com for release checks. Remove these permissions in chrome://extensions.</p><a href="https://github.com/hyuck0221/intranest-web/blob/master/public/guide.html" target="_blank" rel="noreferrer" data-i18n="settings.guide">Open setup guide</a></div>
+    <section id="update-section" class="update-section"><h2 data-i18n="settings.update">Extension updates</h2><p><span data-i18n="settings.current">Installed version</span>: <strong id="current-version"></strong></p><p id="latest-version-row" hidden><span data-i18n="settings.latest">Latest version</span>: <strong id="latest-version"></strong></p><button id="check-updates" class="quiet-button" type="button" data-i18n="settings.checkUpdates">Check for updates</button><a id="release-link" class="text-link" href="https://github.com/hyuck0221/intranest-extensions/releases/latest" target="_blank" rel="noreferrer" hidden data-i18n="update.download">Download update</a><button id="dismiss-update" class="quiet-button" type="button" data-i18n="update.later" hidden>Later</button><p id="update-status" class="form-status" role="status" aria-live="polite"></p></section>
+  </main>
+</body>
+</html>

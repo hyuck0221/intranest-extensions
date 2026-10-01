@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' chrome-extension:; connect-src 'self' https://api.github.com http: https: ws: wss:; object-src 'self'; base-uri 'none'; form-action 'self'">
+  <title>IntraNest</title>
+  <link rel="stylesheet" href="assets/tokens.css">
+  <link rel="stylesheet" href="popup.css">
+  <script type="module" src="popup.js"></script>
+</head>
+<body class="popup-body">
+  <header class="popup-header">
+    <a class="wordmark" href="#" aria-label="IntraNest home">Intra<span>Nest</span></a>
+    <section id="header-connection" class="header-connection" hidden aria-label="Server connection">
+      <div class="server-status"><span class="status-rule" aria-hidden="true"></span><span class="status-dot" aria-hidden="true"></span><span data-i18n="home.connected">Connected</span></div>
+      <div class="server-details"><strong id="server-name">Main office</strong><span id="server-address">192.168.1.40:8080</span></div>
+    </section>
+  </header>
+
+  <main id="connection-screen" class="connection-screen" hidden>
+    <p class="eyebrow" data-i18n="connect.tag">YOUR INTRANEST</p>
+    <h1 data-i18n="connect.title">Connect your nest.</h1>
+    <p class="screen-lede" data-i18n="connect.body">Add the intranet server address to open your team’s shared links.</p>
+    <form id="popup-connect-form" class="popup-form">
+      <label for="popup-address" data-i18n="connect.address">Server address</label>
+      <input id="popup-address" type="text" inputmode="url" autocomplete="url" placeholder="http://192.168.1.40:8080" required>
+      <label for="popup-key" data-i18n="connect.key">Team access key</label>
+      <input id="popup-key" type="password" autocomplete="current-password" placeholder="Access key from your server host" required>
+      <button id="popup-connect-button" class="primary-button" type="submit"><span data-i18n="connect.button">Check and connect</span><span class="icon icon-arrow" aria-hidden="true"></span></button>
+      <p id="popup-connect-status" class="form-status" role="status" aria-live="polite"></p>
+    </form>
+    <p class="permission-note" data-i18n="connect.permission">Chrome will ask to allow this server address and the GitHub release feed for updates.</p>
+    <a class="setup-link" href="options.html" data-i18n="connect.admin">Connection settings</a>
+  </main>
+
+  <main id="home-screen" class="home-screen" hidden>
+    <div class="list-heading"><h1 data-i18n="home.links">Shared links</h1><button id="refresh-button" class="quiet-button" type="button" data-i18n="home.refresh">Refresh</button></div>
+    <p id="home-status" class="home-status" role="status" aria-live="polite"></p>
+    <ol id="links-list" class="links-list" aria-label="Shared links"></ol>
+    <p id="links-empty" class="empty-state" data-i18n="home.empty" hidden>No shared links yet.</p>
+    <section id="update-notice" class="update-notice" hidden aria-live="polite">
+      <div><strong id="update-title">Update available</strong><span id="update-version"></span></div>
+      <div class="update-actions"><button id="update-now" class="text-button" type="button" data-i18n="update.download">Download update</button><button id="update-later" class="text-button muted-button" type="button" data-i18n="update.later">Later</button></div>
+    </section>
+    <button id="add-link-button" class="add-link-button" type="button"><span class="icon icon-plus" aria-hidden="true"></span><span data-i18n="home.add">Add link</span><span class="icon icon-chevron footer-chevron" aria-hidden="true"></span></button>
+    <footer class="popup-footer">
+      <button id="home-settings-button" class="settings-footer" type="button"><span data-i18n="home.settings">Settings</span><span class="icon icon-settings" aria-hidden="true"></span></button>
+    </footer>
+  </main>
+
+  <dialog id="link-dialog" class="link-dialog">
+    <form id="link-form" method="dialog">
+      <div class="dialog-heading"><h2 data-i18n="link.addTitle">Add a shared link</h2><button id="close-link-dialog" class="icon-button" type="button" aria-label="Close"><span class="icon icon-x" aria-hidden="true"></span></button></div>
+      <label for="link-title" data-i18n="link.title">Title</label><input id="link-title" maxlength="100" required>
+      <label for="link-url" data-i18n="link.address">Link address</label><input id="link-url" inputmode="url" placeholder="https://intranet.example" required>
+      <p id="link-form-status" class="form-status" role="status"></p>
+      <div class="dialog-actions"><button class="primary-button" type="submit" data-i18n="link.save">Save link</button><button id="cancel-link" class="quiet-button" type="button" data-i18n="link.cancel">Cancel</button></div>
+    </form>
+  </dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

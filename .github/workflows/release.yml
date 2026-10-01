@@ -1,0 +1,55 @@
+name: Release
+
+on:
+  push:
+    branches: [master]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.repository }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+      - name: Decide whether this version is new
+        id: version
+        shell: bash
+        run: |
+          set -euo pipefail
+          version="$(tr -d '\r\n' < version)"
+          if ! [[ "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "version must use MAJOR.MINOR.PATCH" >&2
+            exit 1
+          fi
+          latest="$(gh api "repos/${GITHUB_REPOSITORY}/releases/latest" --jq '.tag_name // ""' 2>/dev/null || true)"
+          latest="${latest#v}"
+          if [[ -n "$latest" ]] && { [[ "$latest" == "$version" ]] || [[ "$(printf '%s\n%s\n' "$latest" "$version" | sort -V | tail -n 1)" != "$version" ]]; }; then
+            echo "publish=false" >> "$GITHUB_OUTPUT"
+            echo "Version $version is not newer than the published version $latest."
+          else
+            echo "publish=true" >> "$GITHUB_OUTPUT"
+            echo "version=$version" >> "$GITHUB_OUTPUT"
+          fi
+        env:
+          GH_TOKEN: ${{ github.token }}
+      - name: Package extension
+        if: steps.version.outputs.publish == 'true'
+        run: npm run package
+      - name: Create downloadable ZIP
+        if: steps.version.outputs.publish == 'true'
+        run: |
+          mkdir -p release
+          (cd dist/IntraNest && zip -qr "../../release/intranest-extensions_${{ steps.version.outputs.version }}.zip" .)
+      - name: Create GitHub release
+        if: steps.version.outputs.publish == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "v${{ steps.version.outputs.version }}" release/*.zip --title "IntraNest Extension v${{ steps.version.outputs.version }}" --generate-notes

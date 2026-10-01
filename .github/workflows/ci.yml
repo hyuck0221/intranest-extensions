@@ -1,0 +1,27 @@
+name: Build
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+      - name: Validate source files and version
+        run: |
+          node --check popup.js
+          node --check options.js
+          node --check shared.js
+          node -e "const fs=require('node:fs'); const v=fs.readFileSync('version','utf8').trim(); if(!/^\\d+\\.\\d+\\.\\d+$/.test(v)) process.exit(1); if(JSON.parse(fs.readFileSync('manifest.json')).version!==v) process.exit(1)"
+      - name: Package extension
+        run: npm run package

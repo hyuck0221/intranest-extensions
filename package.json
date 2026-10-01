@@ -1,0 +1,8 @@
+{
+  "name": "intranest-extensions",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "package": "node scripts/package.mjs"
+  }
+}
